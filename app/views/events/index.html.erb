@@ -1,0 +1,9 @@
+<% if @events.any? %>
+  <div class="events-list">
+    <% @events.each do |event| %>
+      <%= render_event event %> 
+    <% end %>
+  </div>
+<% else %>
+  <p>No events found.</p>
+<% end %>
