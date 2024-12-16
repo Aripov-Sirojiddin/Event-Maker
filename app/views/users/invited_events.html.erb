@@ -1,0 +1,12 @@
+<p>Events you are invited to.</p>
+<% if @invitations.any? %>
+<div class="events-list">
+    <% @invitations.each do |invite| %>
+      <%= render partial: "shared/event", locals: {event: get_event_info(invite.event_id)} %>
+      <%= button_to "Accept", update_invite_status_path(id: invite.id, status: "Accept", event_id: invite.event_id), method: :patch %>
+      <%= button_to "Decline", update_invite_status_path(id: invite.id, status: "Decline"), method: :patch %>
+    <% end %>
+</div>
+<% else %>
+<p>No events found.</p>
+<% end %>

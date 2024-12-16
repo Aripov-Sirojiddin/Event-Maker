@@ -5,12 +5,14 @@ class EventsController < ApplicationController
     if params[:user_id]
       @events = Event.where(user_id: params[:user_id])
     else
-      @events = Event.all
+      @events = Event.where(private: false)
     end
   end
 
   def show
     @event = Event.find_by(id: params[:id])
+    @attendees = @event.users
+    @invitations = @event.invitiations
   end
 
   def new
@@ -49,7 +51,7 @@ class EventsController < ApplicationController
 
   private
   def event_params
-    params.require(:event).permit(:title, :description)
+    params.require(:event).permit(:title, :description, :private)
   end
 
   def authorize_user

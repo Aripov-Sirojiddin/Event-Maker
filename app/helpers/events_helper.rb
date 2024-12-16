@@ -1,9 +1,13 @@
 module EventsHelper
-  def get_event_creator(user_id)
+  def get_user_by_id(user_id)
     User.find_by(id: user_id).name
   end
 
   def belongs_to_user?(event)
-    !event.nil? && event.user_id == current_user.id
+    !current_user.nil? && !event.nil? && event.user_id == current_user.id
+  end
+
+  def attending_event?(event)
+    event.users.include?(current_user)
   end
 end

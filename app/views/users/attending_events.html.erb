@@ -1,0 +1,10 @@
+<p>Events you are attending</p>
+<% if @events.any? %>
+<div class="events-list">
+    <% @events.each do |event| %>
+      <%= render partial: "shared/event", locals: {event: event} %>
+    <% end %>
+</div>
+<% else %>
+<p>No events found.</p>
+<% end %>

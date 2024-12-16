@@ -3,4 +3,39 @@
 <% if belongs_to_user?(@event) %>
     <%= button_to "Edit Event", edit_event_path(@event), method: :get %>
     <%= button_to "Delete Event", @event, method: :delete %>
+    <%= button_to "Invite User", new_event_invitiation_path(event_id: @event.id), method: :get %>
+<% elsif user_signed_in? && attending_event?(@event) %>
+    <%= button_to "Remove Reservation", event_attendee_path(event_id: @event.id, user_id: current_user.id), method: :delete %>
+<% elsif user_signed_in? %>
+    <%= button_to "Attend Event", event_attendees_path(event_id: @event.id), method: :post %>
+<% end %>
+
+<% if @attendees.length > 0 %>
+    <p>Attendees</p>
+    <% if belongs_to_user?(@event) %>
+        <p>Click on the user to remove them from the event.</p>
+    <% end %>
+    <ol>
+        <% @attendees.each do |attendee| %>
+            <li><%= attendee.name %></li>
+            <% if belongs_to_user?(@event) %>
+                <%= button_to "Remove #{attendee.name}", event_attendee_path(event_id: @event.id, user_id: attendee.id), method: :delete %>
+            <% end %>
+        <% end %>
+    </ol>
+<% end %>
+<br>
+<% if @invitations.length > 0%>
+    <p>Invited Users</p>
+    <% if belongs_to_user?(@event) %>
+        <p>Click the button to un-invite a user from the event.</p>
+    <% end %>
+    <ol>
+        <% @invitations.each do |invite| %>
+            <li><%= get_user_by_id(invite.user_id) %> <br> Status: <%=invite.status%></li>
+            <% if belongs_to_user?(@event) %>
+                <%= button_to "Un-invite", event_invitiation_path(event_id: @event.id, user_id: invite.user_id), method: :delete %>
+            <% end %>
+        <% end %>
+    </ol>
 <% end %>

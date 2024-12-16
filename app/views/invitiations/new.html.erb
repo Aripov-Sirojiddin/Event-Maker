@@ -1,0 +1,10 @@
+<%= form_with url: event_invitiations_path(event_id: @event.id), method: :post do |f|%>
+    <div>
+        <%= f.hidden_field :event_id, value: @event.id %>
+    </div>
+    <div>
+        <%= f.label :username %>
+        <%= f.text_field :username %>
+    </div>
+    <%= f.submit "Invite User" %>
+<% end %>

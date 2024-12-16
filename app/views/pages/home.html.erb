@@ -1,11 +1,11 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
 <% if user_signed_in?%>
     <%= render "/shared/user" %>
     <%= button_to "Sign Out", destroy_user_session_path, method: :delete %>
     <%= button_to "Edit", edit_user_registration_path, method: :get %>
     <%= button_to "Create Event", new_event_path, method: :get %>
     <%= button_to "View Your Events", user_events_path(@user), method: :get %>
+    <%= button_to "Reserved Spots", attending_events_path, method: :get %>
+    <%= button_to "Invited Events", invited_events_path, method: :get %>
 <%else%>
     <%= button_to "Sign In", new_user_session_path, method: :get %>
 <% end %>
