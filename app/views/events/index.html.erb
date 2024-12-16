@@ -1,9 +1,9 @@
 <% if @events.any? %>
-  <div class="events-list">
+<div class="events-list">
     <% @events.each do |event| %>
-      <%= render_event event %> 
+      <%= render partial: "shared/event", locals: {event: event} %>
     <% end %>
-  </div>
+</div>
 <% else %>
-  <p>No events found.</p>
+<p>No events found.</p>
 <% end %>

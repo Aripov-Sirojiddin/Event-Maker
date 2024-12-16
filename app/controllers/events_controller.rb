@@ -1,5 +1,6 @@
 class EventsController < ApplicationController
-  before_action :authenticate_user!, only: [ :new, :create ]
+  before_action :authenticate_user!, except: [ :index, :show ]
+  before_action :authorize_user, only: [ :edit, :update, :destroy ]
   def index
     if params[:user_id]
       @events = Event.where(user_id: params[:user_id])
@@ -25,8 +26,38 @@ class EventsController < ApplicationController
     end
   end
 
+  def edit
+    @event = Event.find_by(id: params[:id])
+  end
+
+  def update
+    event = Event.find_by(id: params[:id])
+    if event.update!(event_params)
+      redirect_to event
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    event = Event.find_by(id: params[:id])
+    if event.present?
+      event.destroy
+    end
+    redirect_to root_path
+  end
+
   private
   def event_params
     params.require(:event).permit(:title, :description)
+  end
+
+  def authorize_user
+    event = Event.find_by(id: params[:id])
+
+    if event.nil? || event.user_id != current_user.id
+      flash[:notice] = "This event does not belong to you."
+      redirect_to root_path
+    end
   end
 end

@@ -1,2 +1,6 @@
-<%= render "shared/event" %>
+<%= render partial: "shared/event", locals:{event: @event} %>
 <%= button_to "Home", root_path, method: :get %>
+<% if belongs_to_user?(@event) %>
+    <%= button_to "Edit Event", edit_event_path(@event), method: :get %>
+    <%= button_to "Delete Event", @event, method: :delete %>
+<% end %>
